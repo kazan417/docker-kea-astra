@@ -9,7 +9,7 @@ ARG KEA_VERSION
 #
 FROM FROM registry.astralinux.ru/astra/ubi18 AS common
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-common \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -42,7 +42,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 FROM common AS dhcp4-slim
 ENV KEA_EXECUTABLE=dhcp4
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-dhcp4-server \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -56,7 +56,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 FROM dhcp4-slim AS dhcp4
 ENV KEA_EXECUTABLE=dhcp4
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-dhcp4-server \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -69,7 +69,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 FROM common AS dhcp6-slim
 ENV KEA_EXECUTABLE=dhcp6
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-dhcp6-server \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -83,7 +83,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 FROM dhcp6-slim AS dhcp6
 ENV KEA_EXECUTABLE=dhcp6
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-dhcp6-server \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -96,7 +96,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 FROM common AS ctrl-agent
 ENV KEA_EXECUTABLE=ctrl-agent
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-ctrl-agent \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -109,7 +109,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 FROM common AS dhcp-ddns
 ENV KEA_EXECUTABLE=dhcp-ddns
 ARG DEBIAN_FRONTEND=noninteractive
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         kea-dhcp-ddns-server \
     && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -120,5 +120,4 @@ ARG DEBIAN_FRONTEND=noninteractive
 # The Hooks image.
 #
 FROM base AS hooks
-COPY --from=builder /hooks /hooks
 CMD [ "ls", "-ahl", "/hooks" ]
